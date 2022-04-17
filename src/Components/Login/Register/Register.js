@@ -4,7 +4,13 @@ import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import auth from "../../../firebase.init";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 const Register = () => {
+  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const handleGoogleSignIn = () => {
+    signInWithGoogle();
+  };
   return (
     <div className="w-25 mx-auto login pt-5">
       <Form>
@@ -47,6 +53,7 @@ const Register = () => {
         <div style={{ border: "1px solid gray" }} className="w-50"></div>
       </div>
       <Button
+        onClick={handleGoogleSignIn}
         className="btn btn-outline-secondary align-items-center justify-content-center rounded-pill w-100 mx-auto d-block"
         variant="light"
         type="submit"
