@@ -5,22 +5,54 @@ import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import auth from "../../../firebase.init";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import {
+  useSignInWithGoogle,
+  useCreateUserWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
 const Register = () => {
-  const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+  const [signInWithGoogle, googleUser, googleLoading, googleError] =
+    useSignInWithGoogle(auth);
   const handleGoogleSignIn = () => {
     signInWithGoogle();
   };
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    createUserWithEmailAndPassword(email, password);
+  };
   return (
     <div className="w-25 mx-auto login pt-5">
-      <Form>
+      <Form onSubmit={handleRegister}>
+        <Form.Group className="mb-3" controlId="formBasicName">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="name"
+            placeholder="Enter name"
+            required
+          />
+        </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control
+            type="email"
+            name="email"
+            placeholder="Enter email"
+            required
+          />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Agree terms and conditions" />
@@ -36,16 +68,14 @@ const Register = () => {
           </Button>
         </div>
       </Form>
-      <div>
-        <h6 className="text-center mt-3">Have an account? </h6>
-        <Link className="text-decoration-none text-success" to="/login">
-          <Button
-            className="btn btn-outline-secondary text-white rounded-pill w-100 mx-auto d-block"
-            variant="dark"
-          >
+      <div className="d-flex justify-content-center">
+        <h6 className=" mt-3">
+          Have an account?
+          <Link className="text-success" to="/login">
+            {" "}
             Login
-          </Button>
-        </Link>
+          </Link>
+        </h6>
       </div>
       <div className="d-flex align-items-center my-2 justify-content-center">
         <div style={{ border: "1px solid gray" }} className="w-50"></div>

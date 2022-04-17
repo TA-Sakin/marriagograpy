@@ -3,20 +3,21 @@ import { Button, Form } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
-
 import "./Login.css";
 import { Link } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import auth from "../../../firebase.init";
 const Login = () => {
   return (
     <div className="w-25 mx-auto login pt-5">
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
+          <Form.Control type="email" placeholder="Enter email" required />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control type="password" placeholder="Password" required />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Agree terms and conditions" />
@@ -36,8 +37,8 @@ const Login = () => {
         <h6 className="text-center mt-3">New to Marriagography? </h6>
         <Link className="text-decoration-none text-success" to="/register">
           <Button
-            className="btn btn-outline-secondary text-white rounded-pill w-100 mx-auto d-block"
-            variant="dark"
+            className="btn btn-outline-dark text-white rounded-pill w-100 mx-auto d-block"
+            variant="secondary"
           >
             Please register
           </Button>
