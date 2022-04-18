@@ -105,15 +105,12 @@ const Login = () => {
         {popupError}
       </Form>
       <div>
-        <h6 className="text-center mt-3">New to Marriagography? </h6>
-        <Link className="text-decoration-none text-success" to="/register">
-          <Button
-            className="btn btn-outline-dark text-white rounded-pill w-100 mx-auto d-block"
-            variant="secondary"
-          >
-            Please register
-          </Button>
-        </Link>
+        <h6 className="text-center mt-4">
+          New to Marriagography?{" "}
+          <Link className="text-success" to="/register">
+            Register
+          </Link>
+        </h6>
       </div>
       <div className="d-flex align-items-center my-2 justify-content-center">
         <div style={{ border: "1px solid gray" }} className="w-50"></div>

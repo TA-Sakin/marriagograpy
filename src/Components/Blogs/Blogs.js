@@ -39,7 +39,7 @@ const Blogs = () => {
       </h3>
       <p className="pt-2 pb-4 fs-3">
         Here are other services that firebase provides other than
-        authentication. <br></br>
+        authentication. <br />
         Cloud Firestore, Cloud Functions, Hosting, Cloud Storage, Realtime
         Database, Google Analytics, Firebase ML, Cloud Messaging, Remote Config.
       </p>

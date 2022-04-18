@@ -1,7 +1,6 @@
 import React from "react";
 import gallery1 from "../../../Assets/images/Gallery/gallery-1.png";
 import gallery2 from "../../../Assets/images/Gallery/gallery-2.png";
-import gallery3 from "../../../Assets/images/Gallery/gallery-6.jpg";
 import gallery4 from "../../../Assets/images/Gallery/gallery-4.png";
 import gallery10 from "../../../Assets/images/Gallery/gallery-10.jpg";
 import gallery11 from "../../../Assets/images/Gallery/gallery-11.jpg";
