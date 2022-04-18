@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
@@ -7,19 +7,25 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
+import { ToastContainer, toast } from "react-toastify";
 import {
   useSignInWithGoogle,
   useSignInWithEmailAndPassword,
+  useSendPasswordResetEmail,
 } from "react-firebase-hooks/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 const Login = () => {
   const [signInWithGoogle, googleUser, googleLoading, googleError] =
     useSignInWithGoogle(auth);
-  const [signInWithEmailAndPassword, user, loading, error] =
+  const [signInWithEmailAndPassword, user, loading, signInError] =
     useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail, sending, passError] =
+    useSendPasswordResetEmail(auth);
+
   const location = useLocation();
   const navigate = useNavigate();
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const from = location.state?.from?.pathname || "/";
 
   const handleGoogleSignIn = () => {
@@ -27,9 +33,15 @@ const Login = () => {
   };
   const handleLogin = (e) => {
     e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
     signInWithEmailAndPassword(email, password);
+  };
+  const handleResetPassword = async () => {
+    if (email) {
+      await sendPasswordResetEmail(email);
+      toast("Sent email");
+    } else {
+      toast("Please enter a valid email");
+    }
   };
   if (googleUser || user) {
     navigate(from, { replace: true });
@@ -43,6 +55,7 @@ const Login = () => {
           <Form.Control
             type="email"
             name="email"
+            onBlur={(e) => setEmail(e.target.value)}
             placeholder="Enter email"
             required
           />
@@ -52,6 +65,7 @@ const Login = () => {
           <Form.Control
             type="password"
             name="password"
+            onBlur={(e) => setPassword(e.target.value)}
             placeholder="Password"
             required
           />
@@ -60,7 +74,9 @@ const Login = () => {
           <Form.Check type="checkbox" label="Agree terms and conditions" />
         </Form.Group>
         <div className="d-flex justify-content-between align-items-center">
-          <p>Forgot password?</p>
+          <b onClick={handleResetPassword} className="forgotPass">
+            Forgot your password?
+          </b>
           <Button
             className="rounded-pill btn btn-outline-secondary text-white w-25 "
             variant="dark"
@@ -110,6 +126,7 @@ const Login = () => {
       >
         <FaFacebook className="icons" /> <b>Continue with Facebook</b>
       </Button>
+      <ToastContainer />
     </div>
   );
 };
