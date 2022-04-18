@@ -17,9 +17,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 const Login = () => {
   const [signInWithGoogle, googleUser, googleLoading, googleError] =
     useSignInWithGoogle(auth);
-  const [signInWithEmailAndPassword, user, loading, signInError] =
+  const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
-  const [sendPasswordResetEmail, sending, passError] =
+  const [sendPasswordResetEmail, sending, passwordError] =
     useSendPasswordResetEmail(auth);
 
   const location = useLocation();
@@ -27,14 +27,23 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const from = location.state?.from?.pathname || "/";
-
+  let popupError;
+  //------------google sign in------------
   const handleGoogleSignIn = () => {
     signInWithGoogle();
   };
+  // ------------ email and password login------------
   const handleLogin = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(email, password);
   };
+  // -----------error handling------------
+
+  if (googleError) {
+    popupError = <p className="text-danger">{googleError?.message}</p>;
+    // toast(`${googleError?.message}` && "Popup closed");
+  }
+  //------------ password reset------------
   const handleResetPassword = async () => {
     if (email) {
       await sendPasswordResetEmail(email);
@@ -43,6 +52,8 @@ const Login = () => {
       toast("Please enter a valid email");
     }
   };
+
+  //------------ redirect to the last page user entered------------
   if (googleUser || user) {
     navigate(from, { replace: true });
   }
@@ -60,6 +71,9 @@ const Login = () => {
             required
           />
         </Form.Group>
+        {error?.message.includes("user") && (
+          <p className="text-danger">{error?.message}</p>
+        )}
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -70,6 +84,9 @@ const Login = () => {
             required
           />
         </Form.Group>
+        {error?.message.includes("pass") && (
+          <p className="text-danger">{error?.message}</p>
+        )}
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Agree terms and conditions" />
         </Form.Group>
@@ -85,6 +102,7 @@ const Login = () => {
             Login
           </Button>
         </div>
+        {popupError}
       </Form>
       <div>
         <h6 className="text-center mt-3">New to Marriagography? </h6>

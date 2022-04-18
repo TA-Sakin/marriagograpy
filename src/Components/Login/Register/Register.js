@@ -3,7 +3,8 @@ import { Button, Form } from "react-bootstrap";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import auth from "../../../firebase.init";
 import {
   useSignInWithGoogle,
@@ -14,16 +15,33 @@ const Register = () => {
     useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
   const [signInWithGoogle, googleUser, googleLoading, googleError] =
     useSignInWithGoogle(auth);
+  const navigate = useNavigate();
+  let errorElement;
+
+  // ------------google sign in------------
   const handleGoogleSignIn = () => {
     signInWithGoogle();
   };
+  //------------error handling---------
+  if (error || googleError) {
+    errorElement = <p className="text-danger"> {googleError?.message}</p>;
+  }
+  //------------redirect to home after signin------------
+  if (user || googleUser) {
+    navigate("/home");
+  }
+
+  // ------------ email and password register ------------
+
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     createUserWithEmailAndPassword(email, password);
+    toast("Account created");
   };
+
   return (
     <div className="w-25 mx-auto login pt-5">
       <Form onSubmit={handleRegister}>
@@ -57,8 +75,7 @@ const Register = () => {
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Agree terms and conditions" />
         </Form.Group>
-        <div className="d-flex justify-content-between align-items-center">
-          <p>Forgot password?</p>
+        <div className="d-flex justify-content-end align-items-center">
           <Button
             className="rounded-pill btn btn-outline-secondary text-white w-25 "
             variant="dark"
@@ -67,6 +84,7 @@ const Register = () => {
             Register
           </Button>
         </div>
+        {errorElement}
       </Form>
       <div className="d-flex justify-content-center">
         <h6 className=" mt-3">
@@ -106,6 +124,7 @@ const Register = () => {
       >
         <FaFacebook className="icons" /> <b>Continue with Facebook</b>
       </Button>
+      <ToastContainer />
     </div>
   );
 };
