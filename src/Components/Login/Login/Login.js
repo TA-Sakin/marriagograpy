@@ -7,7 +7,23 @@ import "./Login.css";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import auth from "../../../firebase.init";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useLocation, useNavigate } from "react-router-dom";
 const Login = () => {
+  const [signInWithGoogle, googleUser, googleLoading, googleError] =
+    useSignInWithGoogle(auth);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
+
+  const handleGoogleSignIn = () => {
+    signInWithGoogle();
+  };
+  if (googleUser) {
+    navigate(from, { replace: true });
+  }
+
   return (
     <div className="w-25 mx-auto login pt-5">
       <Form>
@@ -50,6 +66,7 @@ const Login = () => {
         <div style={{ border: "1px solid gray" }} className="w-50"></div>
       </div>
       <Button
+        onClick={handleGoogleSignIn}
         className="btn btn-outline-secondary align-items-center justify-content-center rounded-pill w-100 mx-auto d-block"
         variant="light"
         type="submit"
