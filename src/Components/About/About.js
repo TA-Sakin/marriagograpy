@@ -8,11 +8,10 @@ const About = () => {
     >
       <h3 className="pb-2 pt-5 text-success">About me</h3>
       <h5>
-        Hi, I'm Sakin currently learning web development. Till now I have
-        learned HTML, CSS, JavaScript, React and Firebase also created various
-        front-end application using those tools. So far the learning process has
-        been quite fascinating. I want to continue this journey and hope to
-        become a full-stack web developer within next 1 year.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
+molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
+numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
+optio, eaque rerum! Provident similique accusantium nemo autem.
       </h5>
     </div>
   );
